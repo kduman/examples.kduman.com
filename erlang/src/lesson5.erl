@@ -33,21 +33,21 @@ foldr(F, Acc, [H|T]) -> F(H, foldr(F, Acc, T)).
 foldl(_, Acc, []) -> Acc;
 foldl(F, Acc, [H|T]) -> foldl(F, F(H, Acc), T).
 
-reverse(L) -> foldl(fun(X, Y) -> [X|Y] end, [], L).
+reverse(L) -> foldl(fun(H, T) -> [H|T] end, [], L).
 
-map2(F, L) -> foldr(fun(X, Y) -> [F(X)|Y] end, [], L).
+map2(F, L) -> foldr(fun(H, T) -> [F(H)|T] end, [], L).
 
-map3(F, L) -> reverse(foldl(fun(X, Y) -> [F(X)|Y] end, [], L)).
+map3(F, L) -> reverse(foldl(fun(H, T) -> [F(H)|T] end, [], L)).
 
 filter(P, L) -> foldr(
-    fun(X, Y) ->
-        case P(X) of
-            true -> [X|Y];
-            _ -> Y
+    fun(H, T) ->
+        case P(H) of
+            true -> [H|T];
+            _ -> T
         end
     end, [], L).
 
-length(L) -> foldl(fun(_, Y) -> Y + 1 end, 0, L).
+length(L) -> foldl(fun(_, Acc) -> Acc + 1 end, 0, L).
 
 sum(L) -> foldl(fun erlang:'+'/2, 0, L).
 
